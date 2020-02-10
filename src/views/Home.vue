@@ -10,7 +10,7 @@
 				<md-autocomplete @input="searchCity()" v-model="selectedCountryDeparture" :md-options="$store.getters.dataCitySearch" @md-changed="getCountriesDeparture" @md-selected="getSeletedItem()">
       <label>Departure</label>
 
-      <template slot="md-autocomplete-item" slot-scope="{ item }"> {{item.name}}--{{item.id}} </template>
+      <template slot="md-autocomplete-item" slot-scope="{ item, term }"> {{item.name}}--{{item.id}} {{term}}</template>
     </md-autocomplete>
 			</div>
 			<div class="guests">
@@ -30,7 +30,7 @@
 				</div>
 			</div>
 		</form>
-		<button class="btn" type="button">BOOK NOW</button>
+		<button @click="searchHotel" class="btn" type="button">BOOK NOW</button>
 		<div class="linkbox">
 			<div class="links">
 				<div class="origin">
@@ -47,7 +47,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-
+import router from '../router/index.js'
 export default {
 	name: 'Home',
 	components: {
@@ -100,11 +100,7 @@ data: () => ({
 methods :{
 	getSeletedItem(){
 		this.selectedCountryDeparture = this.selectedCountryDeparture.iataCode
-	},
-	getSeletedItem2(){
-		this.selectedCountryArrival = this.selectedCountryArrival.iataCode
-	},
-	getCountriesDeparture (searchTerm) {
+	},getCountriesDeparture (searchTerm) {
 		this.countries = new Promise(resolve => {
 			window.setTimeout(() => {
 				if (!searchTerm) {
@@ -163,6 +159,43 @@ postUrlEncoded().then((data) => {
 
 });
 },
+searchHotel(){
+	    var urlSend= "keyword="+this.selectedCountryDeparture
+	   async function postHotel(urlsend) {
+  // Default options are marked with *
+
+  const response = await fetch("http://localhost:2800/hotel?keyword="+urlsend, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      // 'Content-Type': 'application/json'   
+      'Content-Type': 'application/x-www-form-urlencoded',
+  },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *client// body data type must match "Content-Type" header
+    body: urlSend
+});
+   // this.isLoading = true
+  return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+window.console.log(this.selectedCountryDeparture)
+try {
+postHotel(this.selectedCountryDeparture).then((data) => {
+	window.console.log(data)
+	// searchHotel
+	this.$store.commit('change', data)
+	router.push('about')
+	// this.showLoader(false)
+
+});}
+  catch(error) {
+  alert(error);
+
+     }
+}
 }
 }
 </script>
