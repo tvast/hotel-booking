@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["about"],{f820:function(t,e,n){"use strict";n.r(e);var r=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"about"},t._l(t.$store.getters.flavor.data,(function(e,r){return n("div",{key:r},[t._l(e.hotel.media,(function(t,e){return n("div",{key:e},[n("img",{attrs:{src:t.uri}})])})),n("h1",[t._v(t._s(e.hotel.type))])],2)})),0)},a=[],s=n("2877"),u={},i=Object(s["a"])(u,r,a,!1,null,null,null);e["default"]=i.exports}}]);
-//# sourceMappingURL=about.79360f64.js.map
