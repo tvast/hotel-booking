@@ -134,7 +134,7 @@ methods :{
     async function postUrlEncoded() {
   // Default options are marked with *
 
-  const response = await fetch("http://localhost:2800/citySearch?", {
+  const response = await fetch("https://arcane-everglades-06390.herokuapp.com/citySearch?", {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -164,7 +164,7 @@ searchHotel(){
 	   async function postHotel(urlsend) {
   // Default options are marked with *
 
-  const response = await fetch("http://localhost:2800/hotel?keyword="+urlsend, {
+  const response = await fetch("https://arcane-everglades-06390.herokuapp.com/hotel?keyword="+urlsend, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -187,6 +187,14 @@ postHotel(this.selectedCountryDeparture).then((data) => {
 	window.console.log(data)
 	// searchHotel
 	this.$store.commit('change', data)
+	router.onError((error) => {
+ const pattern = /Loading chunk (\d)+ failed/g;
+ const isChunkLoadFailed = error.message.match(pattern);
+ const targetPath = router.history.pending.fullPath;
+ if (isChunkLoadFailed) {
+ router.replace(targetPath);
+ }
+ });
 	router.push('about')
 	// this.showLoader(false)
 
